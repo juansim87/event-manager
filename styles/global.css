@@ -1,0 +1,13 @@
+#performances {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.day-box {
+	border: black 1px solid;
+	width: 300px;
+	height: 200px;
+}
