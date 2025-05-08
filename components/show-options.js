@@ -1,6 +1,6 @@
-export const showOptions = () => {
+export const showOptions = (days) => {
     const performancesBox = document.getElementById("performances");
-    const options = Object.entries(availableDays);
+    const options = Object.entries(days);
     options.forEach((date) => {
         const dayBox = document.createElement("div");
         dayBox.classList.add("day-box");
