@@ -1,4 +1,6 @@
-import { getEvents } from "./components/getEvents.js";
+import { getEvents } from "./components/get-events.js";
+import { generateCalendar } from "./components/btn-generate.js";
+import { resetCalendar } from "./components/btn-reset.js";
 
 // Convertir fecha a UNIX
 const selectorFecha = document.getElementById("fecha");
@@ -10,3 +12,5 @@ selectorFecha.addEventListener("change", (event) => {
 getEvents();
 
 generateCalendar();
+
+resetCalendar();

@@ -29,8 +29,13 @@
 								<h2>Festival de Teatro UPM</h2>
 							</a>
 							<div id="performances"></div>
-                            <div class="calendar">
-                                <button type="button">Generar calendario</button>
+                            <div id="calendar">
+                                <div class="buttons">
+
+                                    <button type="button" id="btnGenerate">Generar calendario</button>
+                                    <button type="button" id="btnReset">Limpiar selecciones</button>
+                                </div>
+                                <div id="calendar-entries"></div>
                             </div>
 						</div>
 						<input type="datetime-local" id="fecha" />
