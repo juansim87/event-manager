@@ -2,7 +2,8 @@ export const generateCalendar = () => {
 	const calendarEntries = document.getElementById("calendar-entries");
 	const generateButton = document.getElementById("btnGenerate");
 	generateButton.addEventListener("click", () => {
-		document.querySelectorAll(".day-box").forEach((box) => {
+		calendarEntries.innerHTML = ``;
+		document.querySelectorAll(".day-box").forEach((box) => {			
 			const daySelection = box.querySelector("p").textContent;
 			const playSelection = box.querySelector(".play-selection").value;
 			if (playSelection !== "Selecciona una obra") {
@@ -13,5 +14,8 @@ export const generateCalendar = () => {
 				calendarEntries.append(calendarEntry);
 			}
 		});
+
 	});
+	
+	
 };
