@@ -8,3 +8,5 @@ selectorFecha.addEventListener("change", (event) => {
 });
 
 getEvents();
+
+generateCalendar();

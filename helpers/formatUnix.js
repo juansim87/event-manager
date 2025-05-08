@@ -33,7 +33,7 @@ export const formatUnix = (ts) => {
 	const hours = String(date.getHours()).padStart(2, "0"); // 00–23
 	const minutes = String(date.getMinutes()).padStart(2, "0"); // 00–59
 
-	return `${weekday} ${day} de ${month} ${year} a las ${hours}:${minutes}`;
+	return `${weekday} ${day} de ${month} ${year} || ${hours}:${minutes}`;
 };
 
 // Ejemplo:
