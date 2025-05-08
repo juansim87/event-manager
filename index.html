@@ -3,9 +3,14 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<script src="app.js" defer type="module"></script>
-		<link rel="stylesheet" href="/styles/global.css" />
 		<title>Document</title>
+		<link rel="stylesheet" href="/styles/global.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/vanilla-calendar@latest/dist/vanilla-calendar.min.css"
+		/>
+		<script src="https://cdn.jsdelivr.net/npm/vanilla-calendar@latest/dist/vanilla-calendar.min.js"></script>
+		<script src="app.js" type="module" defer></script>
 	</head>
 	<body>
 		<div class="body-content">
@@ -29,14 +34,17 @@
 								<h2>Festival de Teatro UPM</h2>
 							</a>
 							<div id="performances"></div>
-                            <div id="calendar">
-                                <div class="buttons">
-
-                                    <button type="button" id="btnGenerate">Generar calendario</button>
-                                    <button type="button" id="btnReset">Limpiar selecciones</button>
-                                </div>
-                                <div id="calendar-entries"></div>
-                            </div>
+							<div id="calendar">
+								<div class="buttons">
+									<button type="button" id="btnGenerate">
+										Generar calendario
+									</button>
+									<button type="button" id="btnReset">
+										Limpiar selecciones
+									</button>
+								</div>
+								<div id="calendar-entries"></div>
+							</div>
 						</div>
 						<input type="datetime-local" id="fecha" />
 					</div>
