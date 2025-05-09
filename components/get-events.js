@@ -1,4 +1,3 @@
-import { formatUnix } from "/helpers/formatUnix.js";
 import { showOptions } from "./show-options.js";
 
 export const getEvents = async () => {
@@ -6,19 +5,23 @@ export const getEvents = async () => {
 		const response = await fetch("/helpers/upm-theater-festival-2025.json");
 		const festivalData = await response.json();
 		console.log(festivalData);
-
 		
 		const availableDays = festivalData.reduce((acc, play) => {
 			play.performances.forEach(({ start_time }) => {
-				const date = formatUnix(Date.parse(start_time) / 1000);
-				if (!acc[date]) {
-					acc[date] = [];
+				const dateKey = start_time.split("T")[0];
+				if(!acc[dateKey]) {
+					acc[dateKey] = [];
 				}
-				if (!acc[date].includes(play.name)) {
-					acc[date].push(play.name);
-				}
-			});
+				acc[dateKey].push({
+					name: play.name,
+					start_time: start_time
+				  });
+				});
+				console.log(acc);
+				
 			return acc;
+			
+			
 		}, {});
 		
 
