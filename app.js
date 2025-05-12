@@ -1,12 +1,19 @@
-import { getEvents } from "./components/get-events.js";
-import { generateCalendar } from "./components/btn-generate.js";
+import { getDates } from "./components/get-dates.js";
+import { getPlays } from "./components/get-plays.js";
+import { customeCalendar } from "./components/btn-generate.js";
 import { resetCalendar } from "./components/btn-reset.js";
 
 
 
-getEvents();
 
-generateCalendar();
+
+
+getDates();
+
+getPlays();
+
+customeCalendar();
 
 resetCalendar();
+
 

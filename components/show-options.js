@@ -2,13 +2,17 @@ import { formatUnix } from "/helpers/formatUnix.js";
 
 export const showOptions = (days) => {
 	const performancesBox = document.getElementById("performances");
+
 	const options = Object.entries(days);
 	options.sort((a, b) => a[0].localeCompare(b[0]));
-	options.forEach((date) => {
+
+	options.forEach(([dateKey, plays]) => {
 		const dayBox = document.createElement("div");
 		dayBox.classList.add("day-box");
+
 		const day = document.createElement("p");
-		day.textContent = formatUnix(Date.parse(date) / 1000);
+		const startTime = Math.floor(Date.parse(plays[0].start_time) / 1000);
+		day.textContent = formatUnix(startTime).split("||")[0].trim();
 
 		const daySelection = document.createElement("select");
 		daySelection.style.width = "100%";
@@ -17,9 +21,15 @@ export const showOptions = (days) => {
 		placeHolder.textContent = "Selecciona una obra";
 		daySelection.append(placeHolder);
 
-		date[1].forEach((play) => {
+		plays.forEach((play) => {
 			const playOption = document.createElement("option");
-			playOption.textContent = play;
+
+			const startTime = Math.floor(Date.parse(play.start_time) / 1000);
+			const time = formatUnix(startTime).split("||")[1].trim();
+
+			playOption.textContent = `${play.title} - ${time}`;
+            playOption.value = play.start_time;
+            
 			daySelection.append(playOption);
 		});
 

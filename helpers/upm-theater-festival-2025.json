@@ -1,6 +1,6 @@
 [
   {
-    "name": "4 habitaciones",
+    "title": "4 habitaciones",
     "association": "Teatro en Canal",
     "location": "ETS de Ingenieros de Caminos, Canales y Puertos",
     "performances": [
@@ -31,7 +31,7 @@
     ]
   },
   {
-    "name": "Arsénico por compasión",
+    "title": "Arsénico por compasión",
     "association": "Histrión",
     "location": "ETS de Ingenieros Informáticos",
     "performances": [
@@ -50,7 +50,7 @@
     ]
   },
   {
-    "name": "Cabaret",
+    "title": "Cabaret",
     "association": "Cuarta Pared Teatro Universitario",
     "location": "ETS de Ingenieros Industriales",
     "performances": [
@@ -73,7 +73,7 @@
     ]
   },
   {
-    "name": "Eloísa está debajo de un almendro",
+    "title": "Eloísa está debajo de un almendro",
     "association": "Isthar Teatro",
     "location": "ETS de Ingeniería Agronómica, Alimentaria y de Biosistemas",
     "performances": [
@@ -92,7 +92,7 @@
     ]
   },
   {
-    "name": "La casa de Bernarda Alba",
+    "title": "La casa de Bernarda Alba",
     "association": "Dédalo",
     "location": "ETS de Ingeniería Aeronáutica y del Espacio",
     "performances": [
@@ -111,7 +111,7 @@
     ]
   },
   {
-    "name": "La Llamada",
+    "title": "La Llamada",
     "association": "Zinico",
     "location": "ETS de Ingeniería y Diseño Industrial",
     "performances": [
@@ -134,7 +134,7 @@
     ]
   },
   {
-    "name": "La familia Addams",
+    "title": "La familia Addams",
     "association": "No Es Culpa Nuestra",
     "location": "ETS de Ingenieros de Telecomunicación",
     "performances": [
@@ -173,7 +173,7 @@
     ]
   },
   {
-    "name": "La vida de Brian",
+    "title": "La vida de Brian",
     "association": "Teatro en Canal",
     "location": "ETS de Ingenieros de Caminos, Canales y Puertos",
     "performances": [
@@ -188,7 +188,7 @@
     ]
   },
   {
-    "name": "Lo que hacemos en las sombras",
+    "title": "Lo que hacemos en las sombras",
     "association": "Cachibache",
     "location": "ETS de Edificación",
     "performances": [
@@ -215,7 +215,7 @@
     ]
   },
   {
-    "name": "Malditas sean coronado y sus hijas",
+    "title": "Malditas sean coronado y sus hijas",
     "association": "Simbiosis",
     "location": "ETS de Ingeniería de Montes, Forestal y del Medio Natural (Edificio Forestales)",
     "performances": [
@@ -234,7 +234,7 @@
     ]
   },
   {
-    "name": "Mono infinito",
+    "title": "Mono infinito",
     "association": "Caín Teatro",
     "location": "Aula Museo (YG1) ETS de Arquitectura",
     "performances": [
@@ -261,7 +261,7 @@
     ]
   },
   {
-    "name": "Nada",
+    "title": "Nada",
     "association": "Caín Teatro",
     "location": "Aula Museo (YG1) ETS de Arquitectura",
     "performances": [
@@ -292,7 +292,7 @@
     ]
   },
   {
-    "name": "Phineas y Ferb: El musical",
+    "title": "Phineas y Ferb: El musical",
     "association": "Cachibache",
     "location": "ETS de Edificación",
     "performances": [
@@ -335,7 +335,7 @@
     ]
   },
   {
-    "name": "Rey de bufones y bufón de reyes",
+    "title": "Rey de bufones y bufón de reyes",
     "association": "No Es Culpa Nuestra",
     "location": "ETS de Ingenieros de Telecomunicación",
     "performances": [
@@ -374,7 +374,7 @@
     ]
   },
   {
-    "name": "Todos eran mis hijos",
+    "title": "Todos eran mis hijos",
     "association": "Dédalo",
     "location": "Rectorado UPM",
     "performances": [
