@@ -1,4 +1,4 @@
-import { formatUnix } from "/helpers/formatUnix.js";
+
 import { showOptions } from "./show-options.js";
 
 export const getEvents = async () => {
@@ -10,12 +10,12 @@ export const getEvents = async () => {
 		
 		const availableDays = festivalData.reduce((acc, play) => {
 			play.performances.forEach(({ start_time }) => {
-				const date = formatUnix(Date.parse(start_time) / 1000);
-				if (!acc[date]) {
-					acc[date] = [];
+				const isoDate = start_time.split("T")[0]; 
+				if (!acc[isoDate]) {
+					acc[isoDate] = [];
 				}
-				if (!acc[date].includes(play.name)) {
-					acc[date].push(play.name);
+				if (!acc[isoDate].includes(play.name)) {
+					acc[isoDate].push(play.name);
 				}
 			});
 			return acc;
@@ -24,7 +24,7 @@ export const getEvents = async () => {
 
 		showOptions(availableDays);
 
-		
+
 	} catch (error) {
 		console.log("Error durante la petición de datos", error.message);
 	}
