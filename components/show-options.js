@@ -27,7 +27,7 @@ export const showOptions = (days) => {
 			const startTime = Math.floor(Date.parse(play.start_time) / 1000);
 			const time = formatUnix(startTime).split("||")[1].trim();
 
-			playOption.textContent = `${play.name} - ${time}`;
+			playOption.textContent = `${play.title} - ${time}`;
             playOption.value = play.start_time;
             
 			daySelection.append(playOption);

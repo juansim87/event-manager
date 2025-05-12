@@ -1,23 +1,22 @@
 import { showOptions } from "./show-options.js";
 
-export const getEvents = async () => {
+export const getDates = async () => {
 	try {
 		const response = await fetch("/helpers/upm-theater-festival-2025.json");
 		const festivalData = await response.json();
 		console.log(festivalData);
 
-		const availableDays = festivalData.reduce((acc, play) => {
-			play.performances.forEach(({ start_time }) => {
+		const availableDays = festivalData.reduce((acc, entry) => {
+			entry.performances.forEach(({ start_time }) => {
 				const dateKey = start_time.split("T")[0];
 				if (!acc[dateKey]) {
 					acc[dateKey] = [];
 				}
 				acc[dateKey].push({
-					name: play.name,
+					title: entry.title,
 					start_time: start_time,
 				});
 			});
-			console.log(acc);
 
 			return acc;
 		}, {});

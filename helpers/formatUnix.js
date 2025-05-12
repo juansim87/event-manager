@@ -33,10 +33,11 @@ export const formatUnix = (ts) => {
 	const hours = String(date.getHours()).padStart(2, "0"); // 00–23
 	const minutes = String(date.getMinutes()).padStart(2, "0"); // 00–59
 
+	// return `${weekday} ${day} de ${month} de ${year} || ${hours}:${minutes}`;
 	return `${weekday} ${day} de ${month} || ${hours}:${minutes}`;
 };
 
 // Ejemplo:
 const ejemploTs = Date.parse("2025-08-02T10:50:00+02:00") / 1000;
-console.log(formatUnix(ejemploTs));
+// console.log(formatUnix(ejemploTs));
 // → "Sábado 2 de Agosto 2025 a las 10:50"
