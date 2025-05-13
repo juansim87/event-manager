@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script src="\app.js" defer type="module"></script>
+		<link rel="stylesheet" href="/styles/global.css" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div class="body-content ">
+			<header>
+				<nav>
+					<div class="nav-content">
+						<div class="logo">
+							<img
+								src="/media/iconos/calendar.png"
+								alt="Logo de calendario de la app"
+							/>
+						</div>
+						<div class="nav-menu">
+							<ul>
+								<li>
+									<a href="/index.html">Inicio</a>
+								</li>
+								<li>
+									<a href="/directory/user-events.html">Tus eventos</a>
+								</li>
+							</ul>
+							<button>Login</button>
+						</div>
+					</div>
+				</nav>
+			</header>
+			<main>
+				<h1>Festival teatro UPM</h1>
+				<div class="event-calendar">
+					<div id="performances"></div>
+					<div id="generator">
+						<div class="buttons">
+							<button type="button" id="btnGenerate">Generar calendario</button>
+							<button type="button" id="btnReset">Limpiar selecciones</button>
+						</div>
+						<div id="calendar-entries"></div>
+					</div>
+
+					<div id="calendar"></div>
+				</div>
+			</main>
+		</div>
+	</body>
+</html>

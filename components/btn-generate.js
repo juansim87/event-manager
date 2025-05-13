@@ -2,6 +2,10 @@ export const customeCalendar = () => {
 	const calendarEntries = document.getElementById("calendar-entries");
 	const generateButton = document.getElementById("btnGenerate");
 
+	if (!generateButton){
+		return;
+	}
+
 	generateButton.addEventListener("click", () => {
 		calendarEntries.innerHTML = ``;
 

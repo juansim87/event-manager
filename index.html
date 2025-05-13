@@ -6,50 +6,66 @@
 		<title>Document</title>
 		<link rel="stylesheet" href="/styles/global.css" />
 		<link
+			href="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro/styles/index.css"
 			rel="stylesheet"
-			href="https://cdn.jsdelivr.net/npm/vanilla-calendar@latest/dist/vanilla-calendar.min.css"
 		/>
-		<script src="https://cdn.jsdelivr.net/npm/vanilla-calendar@latest/dist/vanilla-calendar.min.js"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro/index.js"
+			defer
+		></script>
 		<script src="app.js" type="module" defer></script>
 	</head>
 	<body>
-		<div class="body-content">
+		<div class="body-content page-container">
 			<header>
 				<nav>
 					<div class="nav-content">
-						<div class="logo"></div>
-						<div class="nav-menu"></div>
+						<div class="logo">
+							<img
+								src="/media/iconos/calendar.png"
+								alt="Logo de calendario de la app"
+							/>
+						</div>
+						<div class="nav-menu">
+							<ul>
+								<li>
+									<a href="/index.html">Inicio</a>
+								</li>
+								<li>
+									<a href="/directory/user-events.html">Tus eventos</a>
+								</li>
+							</ul>
+							<button>Login</button>
+						</div>
 					</div>
 				</nav>
 			</header>
 			<main>
-				<section id="hero">
+				<div id="hero">
 					<h1>Tus eventos</h1>
 					<div class="user-events">
 						<div class="event" role="button">
-							<a href="\directory\events.html">
+							<a href="\directory\user-events.html">
 								<div class="event-img">
-									<img src="" alt="" />
+									<img src="/media/iconos/theater.png" alt="Icono de teatro" />
 								</div>
 								<h2>Festival de Teatro UPM</h2>
 							</a>
-							<div id="performances"></div>
-							<div id="generator">
-								<div id="calendar"></div>
-								<div class="buttons">
-									<button type="button" id="btnGenerate">
-										Generar calendario
-									</button>
-									<button type="button" id="btnReset">
-										Limpiar selecciones
-									</button>
+						</div>
+						<div class="event" role="button">
+							<a href="/directory/user-events.html">
+								<div class="event-img">
+									<img
+										src="/media/iconos/festival.png"
+										alt="Icono de festival"
+									/>
 								</div>
-								
-							</div>
-							<div id="calendar-entries"></div>
+								<h2>Fiestas de San Isidro</h2>
+							</a>
 						</div>
 					</div>
-				</section>
+				</div>
+				<div id="calendar"></div>
 			</main>
 			<footer></footer>
 		</div>

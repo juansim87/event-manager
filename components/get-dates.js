@@ -26,3 +26,16 @@ export const getDates = async () => {
 		console.log("Error durante la petición de datos", error.message);
 	}
 };
+
+export const getDatabase = async () => {
+	try {
+		const response = await fetch("/helpers/upm-theater-festival-2025.json");
+		const festivalData = await response.json();
+		console.log(festivalData);
+
+		return festivalData;
+		
+	} catch (error) {
+		console.log("Error durante la petición de datos", error.message);
+	}
+};
