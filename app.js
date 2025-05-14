@@ -2,7 +2,7 @@ import { getDatabase, getDates } from "./components/get-dates.js";
 import { getPlays } from "./components/get-plays.js";
 import { customeCalendar } from "./components/btn-generate.js";
 import { resetCalendar } from "./components/btn-reset.js";
-import { formatUnix } from "./helpers/formatUnix.js";
+// import { formatUnix } from "./helpers/formatUnix.js";
 
 getDates();
 
@@ -46,14 +46,15 @@ const monthsWithPlays = async () => {
 	return latest - earliest + 1;
 };
 
-const datesWithoutPlays = async () => {
-	const formatDate = await getAllStartDates();
+//Array de días deshabilitados durante el período de festival
 
-	const datesWithPlays = formatDate
+const datesWithoutPlays = async () => {
+	const allPlayDates = await getAllStartDates();
+
+	const datesWithPlays = allPlayDates
 		.map((element) => element.toISOString().split("T")[0])
 		.filter((date, index, array) => array.indexOf(date) === index);
 
-	
 	const allDatesInRange = [];
 
 	const minDateString = await getFormattedDate("min");
@@ -70,14 +71,40 @@ const datesWithoutPlays = async () => {
 		index.setDate(index.getDate() + 1);
 	}
 
-	const datesWithNoPlays = allDatesInRange.filter((date) => !datesWithPlays.includes(date));
-
-	
+	const datesWithNoPlays = allDatesInRange.filter(
+		(date) => !datesWithPlays.includes(date)
+	);
 
 	return datesWithNoPlays;
 };
 
-datesWithoutPlays();
+const generatePopUps = async () => {
+	const data = await getDatabase();
+
+	const popUpMap = data.reduce((acc, play) => {
+		play.performances.forEach((performance) => {
+			const date = performance.start_time.split("T")[0];
+			const time = performance.start_time.split("T")[1].slice(0, 5);
+
+			const playAndTime = `${play.title} - ${time}`;
+
+			if (!acc[date]) {
+				acc[date] = [];
+			}
+
+			acc[date].push(playAndTime);
+		});
+
+		return acc;
+	}, {});
+
+
+	console.log(popUpMap);
+
+	return popUpMap;
+};
+
+generatePopUps();
 
 const { Calendar } = window.VanillaCalendarPro;
 
@@ -90,12 +117,23 @@ const calendar = new Calendar("#calendar", {
 	displayMonthsCount: await monthsWithPlays(),
 	locale: "es-ES",
 	async onClickDate(self) {
-		const selectedDate = self.context.selectedDates[0];
-		const filtered = await dateFilter(selectedDate);
-		const footer = document.getElementById("footer");
-		footer.textContent= `${filtered}`;
-	},
-	
+	const selectedDate = self.context.selectedDates[0];
+	const filtered = await dateFilter(selectedDate);
+
+	const contenedor = document.getElementById("obras-del-dia");
+	contenedor.innerHTML = ""; // limpiar contenido anterior
+
+	if (filtered.length === 0) {
+		contenedor.innerHTML = "<p>No hay funciones este día</p>";
+		return;
+	}
+
+	filtered.forEach((obra) => {
+		const p = document.createElement("p");
+		p.innerHTML = `<b>${obra.title}</b>`;
+		contenedor.appendChild(p);
+	});
+}
 });
 
 calendar.init();
