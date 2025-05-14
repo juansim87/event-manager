@@ -2,6 +2,7 @@ import { getDatabase, getDates } from "./components/get-dates.js";
 import { getPlays } from "./components/get-plays.js";
 import { customeCalendar } from "./components/btn-generate.js";
 import { resetCalendar } from "./components/btn-reset.js";
+import { formatUnix } from "./helpers/formatUnix.js";
 
 getDates();
 
@@ -20,98 +21,81 @@ const dateFilter = async (date) => {
 	);
 };
 
-//Primer día con obra
-
-const firstDate = async () => {
+const getAllStartDates = async () => {
 	const data = await getDatabase();
-
-	const everyDate = data
-		.flatMap((play) => play.performances.map((p) => p.start_time))
-		.map((date) => new Date(date));
-
-	const earliestDate = new Date(Math.min(...everyDate.map((d) => d.getTime())));
-
-	const date = new Date(earliestDate);
-	const shortFormat = date.toISOString().split("T")[0];
-
-	return shortFormat;
-};
-
-//Última día con obra
-const lastDate = async () => {
-	const data = await getDatabase();
-
-	const everyDate = data
-		.flatMap((play) => play.performances.map((p) => p.start_time))
-		.map((date) => new Date(date));
-
-	const earliestDate = new Date(Math.max(...everyDate.map((d) => d.getTime())));
-
-	const date = new Date(earliestDate);
-	const shortFormat = date.toISOString().split("T")[0];
-
-	return shortFormat;
-};
-
-///Primer mes con obras
-
-const firstMonth = async () => {
-	const data = await getDatabase();
-
-	const everyDate = data
-		.flatMap((play) => play.performances.map((p) => p.start_time))
-		.map((date) => new Date(date));
-
-	const earliestMonth = new Date(
-		Math.min(...everyDate.map((d) => d.getTime()))
+	return data.flatMap((play) =>
+		play.performances.map((p) => new Date(p.start_time))
 	);
-	return earliestMonth.getMonth();
 };
 
-///Último mes con obras
-
-const lastMonth = async () => {
-	const data = await getDatabase();
-
-	const everyDate = data
-		.flatMap((play) => play.performances.map((p) => p.start_time))
-		.map((fecha) => new Date(fecha));
-
-	const latestMonth = new Date(
-		Math.max(...everyDate.map((date) => date.getTime()))
-	);
-
-	return latestMonth.getMonth();
+const getFormattedDate = async (type = "min") => {
+	const dates = await getAllStartDates();
+	const targetTime = Math[type](...dates.map((d) => d.getTime()));
+	return new Date(targetTime).toISOString().split("T")[0];
 };
 
-//Meses a mostrar
+const getMonth = async (type = "min") => {
+	const dates = await getAllStartDates();
+	const targetTime = Math[type](...dates.map((d) => d.getTime()));
+	return new Date(targetTime).getMonth();
+};
 
 const monthsWithPlays = async () => {
-	const earliestMonth = await firstMonth();
-	const latestMonth = await lastMonth();
-	const calculateMonths = latestMonth - earliestMonth + 1;
-	return calculateMonths;
+	const earliest = await getMonth("min");
+	const latest = await getMonth("max");
+	return latest - earliest + 1;
 };
 
+const datesWithoutPlays = async () => {
+	const formatDate = await getAllStartDates();
 
-///Array de fechas para deshabilitar
+	const datesWithPlays = formatDate
+		.map((element) => element.toISOString().split("T")[0])
+		.filter((date, index, array) => array.indexOf(date) === index);
 
+	
+	const allDatesInRange = [];
 
+	const minDateString = await getFormattedDate("min");
+	const maxDateString = await getFormattedDate("max");
+
+	const currentDate = new Date(minDateString);
+	const lastDate = new Date(maxDateString);
+
+	const index = new Date(currentDate);
+
+	while (index <= lastDate) {
+		const formatted = index.toISOString().split("T")[0];
+		allDatesInRange.push(formatted);
+		index.setDate(index.getDate() + 1);
+	}
+
+	const datesWithNoPlays = allDatesInRange.filter((date) => !datesWithPlays.includes(date));
+
+	
+
+	return datesWithNoPlays;
+};
+
+datesWithoutPlays();
 
 const { Calendar } = window.VanillaCalendarPro;
 
 const calendar = new Calendar("#calendar", {
 	type: "multiple",
-	displayDateMin: await firstDate(),
-	displayDateMax: await lastDate(),
-	selectedMonth: await firstMonth(),
+	displayDateMin: await getFormattedDate("min"),
+	displayDateMax: await getFormattedDate("max"),
+	disableDates: await datesWithoutPlays(),
+	selectedMonth: await getMonth("min"),
 	displayMonthsCount: await monthsWithPlays(),
 	locale: "es-ES",
 	async onClickDate(self) {
 		const selectedDate = self.context.selectedDates[0];
 		const filtered = await dateFilter(selectedDate);
-		console.log(filtered);
-	}
+		const footer = document.getElementById("footer");
+		footer.textContent= `${filtered}`;
+	},
+	
 });
 
 calendar.init();
