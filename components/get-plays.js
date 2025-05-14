@@ -1,4 +1,4 @@
-import { showOptions } from "./show-options.js";
+import { showOptions } from "./show-dates.js";
 
 export const getPlays = async () => {
 	try {
