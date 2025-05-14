@@ -14,10 +14,13 @@ resetCalendar();
 
 const dateFilter = async (date) => {
 	const data = await getDatabase();
-	return data.filter((play) =>
-		play.performances.some((performance) =>
-			performance.start_time.startsWith(date)
-		)
+	return data.flatMap((play) =>
+		play.performances
+			.filter((performance) => performance.start_time.startsWith(date))
+			.map((performance) => ({
+				title: play.title,
+				start_time: performance.start_time.split("T")[1].slice(0,5)
+			}))
 	);
 };
 
@@ -78,33 +81,32 @@ const datesWithoutPlays = async () => {
 	return datesWithNoPlays;
 };
 
-const generatePopUps = async () => {
-	const data = await getDatabase();
+// const generatePopUps = async () => {
+// 	const data = await getDatabase();
 
-	const popUpMap = data.reduce((acc, play) => {
-		play.performances.forEach((performance) => {
-			const date = performance.start_time.split("T")[0];
-			const time = performance.start_time.split("T")[1].slice(0, 5);
+// 	const popUpMap = data.reduce((acc, play) => {
+// 		play.performances.forEach((performance) => {
+// 			const date = performance.start_time.split("T")[0];
+// 			const time = performance.start_time.split("T")[1].slice(0, 5);
 
-			const playAndTime = `${play.title} - ${time}`;
+// 			const playAndTime = `${play.title} - ${time}`;
 
-			if (!acc[date]) {
-				acc[date] = [];
-			}
+// 			if (!acc[date]) {
+// 				acc[date] = [];
+// 			}
 
-			acc[date].push(playAndTime);
-		});
+// 			acc[date].push(playAndTime);
+// 		});
 
-		return acc;
-	}, {});
+// 		return acc;
+// 	}, {});
 
+// 	console.log(popUpMap);
 
-	console.log(popUpMap);
+// 	return popUpMap;
+// };
 
-	return popUpMap;
-};
-
-generatePopUps();
+// generatePopUps();
 
 const { Calendar } = window.VanillaCalendarPro;
 
@@ -117,23 +119,23 @@ const calendar = new Calendar("#calendar", {
 	displayMonthsCount: await monthsWithPlays(),
 	locale: "es-ES",
 	async onClickDate(self) {
-	const selectedDate = self.context.selectedDates[0];
-	const filtered = await dateFilter(selectedDate);
+		const selectedDate = self.context.selectedDates[0];
+		const filtered = await dateFilter(selectedDate);
 
-	const contenedor = document.getElementById("obras-del-dia");
-	contenedor.innerHTML = ""; // limpiar contenido anterior
+		const contenedor = document.getElementById("obras-del-dia");
+		contenedor.innerHTML = "";
 
-	if (filtered.length === 0) {
-		contenedor.innerHTML = "<p>No hay funciones este día</p>";
-		return;
-	}
+		if (filtered.length === 0) {
+			contenedor.innerHTML = "<p>No hay funciones este día</p>";
+			return;
+		}
 
-	filtered.forEach((obra) => {
-		const p = document.createElement("p");
-		p.innerHTML = `<b>${obra.title}</b>`;
-		contenedor.appendChild(p);
-	});
-}
+		filtered.forEach((play) => {
+			const p = document.createElement("p");
+			p.innerHTML = `<b>${play.title} - ${play.start_time}</b>`;
+			contenedor.appendChild(p);
+		});
+	},
 });
 
 calendar.init();
