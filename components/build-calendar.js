@@ -1,6 +1,9 @@
 import { getDatabase } from "/components/get-dates.js";
 
 export const buildCalendar = async () => {
+
+    let checkedPlays = [];
+
 	const dateFilter = async (date) => {
 		const data = await getDatabase();
 		return data.flatMap((play) =>
@@ -72,7 +75,7 @@ export const buildCalendar = async () => {
 		return datesWithNoPlays;
 	};
 
-	let checkedPlays = [];
+	
 	const { Calendar } = window.VanillaCalendarPro;
 
 	const calendar = new Calendar("#calendar", {
@@ -86,6 +89,7 @@ export const buildCalendar = async () => {
 		async onClickDate(self) {
 			const selectedDate = self.context.selectedDates[0];
 			const filtered = await dateFilter(selectedDate);
+            filtered.sort((a, b) => a.start_time.localeCompare(b.start_time));
 
 			const contenedor = document.getElementById("date-plays");
 			contenedor.innerHTML = "";
@@ -98,6 +102,7 @@ export const buildCalendar = async () => {
 				input.value = play.start_time;
 				input.name = `play-${selectedDate}`;
 				input.setAttribute("data-date", selectedDate);
+
 				const existingSelection = checkedPlays.find(
 					(p) =>
 						p.date === selectedDate &&
@@ -111,33 +116,22 @@ export const buildCalendar = async () => {
 
 				input.addEventListener("click", () => {
 					const date = input.dataset.date;
-					if (input.checked) {
-						checkedPlays = checkedPlays.filter((play) => play.date !== date);
 
-						const checkedPlayInfo = {
-							play: play.title,
-							time: play.start_time,
-							date: date,
-						};
+					checkedPlays = checkedPlays.filter((p) => p.date !== date);
 
-						checkedPlays.push(checkedPlayInfo);
-					} else {
-						checkedPlays = checkedPlays.filter(
-							(p) =>
-								!(
-									p.play === play.title &&
-									p.time === play.start_time &&
-									p.date === date
-								)
-						);
-					}
-                    console.log(checkedPlays);
+					const checkedPlayInfo = {
+						play: play.title,
+						time: play.start_time,
+						date: date,
+					};
+
+					checkedPlays.push(checkedPlayInfo);
+					console.log(checkedPlays);
 				});
-
 
 				const label = document.createElement("label");
 				label.htmlFor = id;
-				label.textContent = `${play.title}`;
+				label.textContent = `${play.start_time} || ${play.title}`;
 
 				contenedor.appendChild(input);
 				contenedor.appendChild(label);
