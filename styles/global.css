@@ -202,7 +202,7 @@ main {
 	align-items: center;
 }
 
-#calendar-entries {
+.summary-box {
 	display: flex;
 	flex-direction: column;	
 	background-color: var(--box-color);
@@ -210,4 +210,9 @@ main {
 	color: #fff;
 	padding: 8px;
 	gap: 8px;
+}
+
+
+.bg-red {
+	background-color: blue;
 }

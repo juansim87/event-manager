@@ -1,5 +1,3 @@
-// Arrays con nombres en español (capitalizados)
-
 export const formatUnix = (ts) => {
 	const weekdays = [
 		"Domingo",
@@ -10,6 +8,7 @@ export const formatUnix = (ts) => {
 		"Viernes",
 		"Sábado",
 	];
+
 	const months = [
 		"Enero",
 		"Febrero",
@@ -34,7 +33,7 @@ export const formatUnix = (ts) => {
 	const minutes = String(date.getMinutes()).padStart(2, "0"); // 00–59
 
 	// return `${weekday} ${day} de ${month} de ${year} || ${hours}:${minutes}`;
-	return `${weekday} ${day} de ${month} || ${hours}:${minutes}`;
+	return `${weekday} ${day} de ${month}`;
 };
 
 // Ejemplo:

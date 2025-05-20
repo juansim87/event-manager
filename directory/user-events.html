@@ -3,12 +3,20 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<script src="\app.js" defer type="module"></script>
 		<link rel="stylesheet" href="/styles/global.css" />
+		<link
+			href="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro/styles/index.css"
+			rel="stylesheet"
+		/>
+		<script
+			src="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro/index.js"
+			defer
+		></script>
+		<script src="\app.js" defer type="module"></script>
 		<title>Document</title>
 	</head>
 	<body>
-		<div class="body-content ">
+		<div class="body-content">
 			<header>
 				<nav>
 					<div class="nav-content">
@@ -33,9 +41,11 @@
 				</nav>
 			</header>
 			<main>
-				<h1>Festival teatro UPM</h1>
-				<div class="event-calendar">
-					<div id="performances"></div>
+				<div class="page-container">
+					<h1>Festival teatro UPM</h1>
+
+					<div id="calendar"></div>
+					<div id="date-plays" class="selector-box"></div>
 					<div id="generator">
 						<div class="buttons">
 							<button type="button" id="btnGenerate">Generar calendario</button>
@@ -43,8 +53,6 @@
 						</div>
 						<div id="calendar-entries"></div>
 					</div>
-
-					<div id="calendar"></div>
 				</div>
 			</main>
 		</div>

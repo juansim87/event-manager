@@ -1,16 +1,20 @@
 import { getDatabase } from "/components/get-dates.js";
+import { formatUnix } from "../helpers/formatUnix.js";
+import { generateSummary } from "./generate-summary.js";
+
+export let checkedPlays = [];
 
 export const buildCalendar = async () => {
 
-    let checkedPlays = [];
-
 	const dateFilter = async (date) => {
 		const data = await getDatabase();
+
 		return data.flatMap((play) =>
 			play.performances
 				.filter((performance) => performance.start_time.startsWith(date))
 				.map((performance) => ({
 					title: play.title,
+					// date: performance.start_time.split("T")[0],
 					start_time: performance.start_time.split("T")[1].slice(0, 5),
 				}))
 		);
@@ -22,8 +26,6 @@ export const buildCalendar = async () => {
 			play.performances.map((p) => new Date(p.start_time))
 		);
 	};
-
-	getAllStartDates();
 
 	const getFormattedDate = async (type = "min") => {
 		const dates = await getAllStartDates();
@@ -75,7 +77,38 @@ export const buildCalendar = async () => {
 		return datesWithNoPlays;
 	};
 
-	
+	const generatePopups = async () => {
+		const data = await getDatabase();
+
+		const popups = {};
+
+		data.forEach((play) => {
+			play.performances.forEach((performance) => {
+				const date = performance.start_time.split("T")[0];
+				const time = performance.start_time.split("T")[1].slice(0, 5);
+
+				const block = `<b>${time} PM</b><br><p style="margin: 5px 0 0;">${play.title}</p><br>`;
+
+				if (!popups[date]) {
+					popups[date] = {
+						html: `<div>${block}`,
+					};
+				} else {
+					popups[date].html += block;
+				}
+			});
+		});
+
+		// Cerramos el <div> abierto para cada fecha
+		Object.keys(popups).forEach((date) => {
+			popups[date].html += `</div>`;
+		});
+
+		return popups;
+	};
+
+	console.log(await generatePopups());
+
 	const { Calendar } = window.VanillaCalendarPro;
 
 	const calendar = new Calendar("#calendar", {
@@ -85,14 +118,48 @@ export const buildCalendar = async () => {
 		disableDates: await datesWithoutPlays(),
 		selectedMonth: await getMonth("min"),
 		displayMonthsCount: await monthsWithPlays(),
+		popups: await generatePopups(),
 		locale: "es-ES",
 		async onClickDate(self) {
 			const selectedDate = self.context.selectedDates[0];
 			const filtered = await dateFilter(selectedDate);
-            filtered.sort((a, b) => a.start_time.localeCompare(b.start_time));
+			filtered.sort((a, b) => a.start_time.localeCompare(b.start_time));
 
 			const contenedor = document.getElementById("date-plays");
 			contenedor.innerHTML = "";
+
+			const noneId = `none-${selectedDate}`;
+			const noneInput = document.createElement("input");
+			noneInput.type = "radio";
+			noneInput.id = noneId;
+			noneInput.name = `play-${selectedDate}`;
+			noneInput.value = "none";
+			noneInput.setAttribute("data-date", selectedDate);
+
+			const existingSelection = checkedPlays.find(
+				(p) => p.date === selectedDate
+			);
+
+			if (!existingSelection) {
+				noneInput.checked = true;
+			}
+
+			noneInput.addEventListener("click", () => {
+				const date = noneInput.dataset.date;
+
+				checkedPlays = checkedPlays.filter((p) => p.date !== date);
+
+				console.log(checkedPlays);
+			});
+
+			const noneLabel = document.createElement("label");
+			noneLabel.htmlFor = noneId;
+			noneLabel.textContent = "Ninguna";
+
+			// Añádelo al DOM
+			contenedor.appendChild(noneInput);
+			contenedor.appendChild(noneLabel);
+			contenedor.appendChild(document.createElement("br"));
 
 			filtered.forEach((play, index) => {
 				const id = `${index}-${play.title}-${play.start_time}`;
@@ -120,7 +187,7 @@ export const buildCalendar = async () => {
 					checkedPlays = checkedPlays.filter((p) => p.date !== date);
 
 					const checkedPlayInfo = {
-						play: play.title,
+						title: play.title,
 						time: play.start_time,
 						date: date,
 					};
@@ -141,4 +208,36 @@ export const buildCalendar = async () => {
 	});
 
 	calendar.init();
+
+	/**
+	 *
+	 * @returns Resumen de las obras seleccionadas en el calendario
+	 */
+
+	generateSummary(checkedPlays);
+
+	const resetSelections = () => {
+		const resetButton = document.getElementById("btnReset");
+		const calendarEntries = document.getElementById("calendar-entries");
+
+		if (!resetButton) {
+			return;
+		}
+
+		resetButton.addEventListener("click", () => {
+			calendarEntries.classList.remove("summary-box");
+			calendarEntries.innerHTML = ``;
+
+			const noneRadios = document.querySelectorAll(
+				"input[type = 'radio'][value = 'none]"
+			);
+			noneRadios.forEach((radio) => {
+				radio.checked = true;
+			});
+
+			checkedPlays= [];
+		});
+	};
+
+	resetSelections();
 };
