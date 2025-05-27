@@ -1,8 +1,12 @@
 import { getDatabase } from "/components/get-dates.js";
-import { formatUnix } from "../helpers/formatUnix.js";
-import { generateSummary } from "./generate-summary.js";
 
-export let checkedPlays = [];
+import { generateSummary } from "./generate-summary.js";
+import { saveDataInStorage, getDataFromStorage } from "../helpers/storage.js";
+
+
+
+const storedPlays = getDataFromStorage("selectedPlays");
+export let checkedPlays = Array.isArray(storedPlays) ? storedPlays : [];
 
 export const buildCalendar = async () => {
 
@@ -154,7 +158,8 @@ export const buildCalendar = async () => {
 
 				checkedPlays = checkedPlays.filter((p) => p.date !== date);
 
-				console.log(checkedPlays);
+				saveDataInStorage("selectedPlays", checkedPlays);
+
 			});
 
 			const noneLabel = document.createElement("label");
@@ -198,7 +203,9 @@ export const buildCalendar = async () => {
 					};
 
 					checkedPlays.push(checkedPlayInfo);
-					console.log(checkedPlays);
+
+					saveDataInStorage("selectedPlays", checkedPlays);
+					
 				});
 
 				const label = document.createElement("label");

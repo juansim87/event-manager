@@ -5,14 +5,12 @@
  */
 
 
-const getDataFromStorage = (key) => {
+export const getDataFromStorage = (key) => {
     const data = localStorage.getItem(key);
+
+    return data ? JSON.parse(data) : null;
   
-    if (data) {
-      return JSON.parse(data);
-    }
-  
-    return null;
+   
   };
   
   /**
@@ -21,7 +19,7 @@ const getDataFromStorage = (key) => {
    * @param {*} data Admite arrays, objetos y convierte con stringify el objeto antes de guardarlo
    */
   
-  const saveDataInStorage = (key, data) => {
+  export const saveDataInStorage = (key, data) => {
     localStorage.setItem(key, JSON.stringify(data));
   };
   

@@ -8,11 +8,13 @@ export const generateSummary = () => {
 
 	btnGenerate.addEventListener("click", async () => {
 		calendarEntries.innerHTML = ``;
+		calendarEntries.style.marginTop = "20px";
 
 		const { checkedPlays } = await import("./build-calendar.js");
 
 		if (checkedPlays.length === 0) {
 			const noneAlert = document.createElement("p");
+			
 			noneAlert.textContent = "No hay obras seleccionadas";
 			calendarEntries.append(noneAlert);
 			return;
