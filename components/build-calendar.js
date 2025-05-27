@@ -132,8 +132,10 @@ export const buildCalendar = async () => {
 			contenedor.innerHTML = "";
 
 			const existingSelectionForDate = checkedPlays.find(
-		(p) => p.date === selectedDate
-	);
+				(p) => p.date === selectedDate
+			);
+
+			const noneSelectionBox = document.createElement("div");
 
 			const noneId = `none-${selectedDate}`;
 			const noneInput = document.createElement("input");
@@ -161,12 +163,14 @@ export const buildCalendar = async () => {
 			noneLabel.htmlFor = noneId;
 			noneLabel.textContent = "Ninguna";
 
-			// Añádelo al DOM
-			contenedor.appendChild(noneInput);
-			contenedor.appendChild(noneLabel);
-			contenedor.appendChild(document.createElement("br"));
+			noneSelectionBox.append(noneInput, noneLabel)
+			contenedor.appendChild(noneSelectionBox);
+			
 
 			filtered.forEach((play, index) => {
+
+			const selectionBox = document.createElement("div");
+
 				const id = `${index}-${play.title}-${play.start_time}`;
 				const input = document.createElement("input");
 				input.type = "radio";
@@ -206,10 +210,15 @@ export const buildCalendar = async () => {
 				label.htmlFor = id;
 				label.textContent = `${play.start_time} || ${play.title}`;
 
-				contenedor.appendChild(input);
-				contenedor.appendChild(label);
-				contenedor.appendChild(document.createElement("br"));
+				selectionBox.append(input, label)
+
+				contenedor.appendChild(selectionBox);
+				
 			});
+
+			if (contenedor.textContent !== "" ) {
+				contenedor.classList.add("selector-box");
+			}
 		},
 	});
 
@@ -226,13 +235,14 @@ export const buildCalendar = async () => {
 		const resetButton = document.getElementById("btnReset");
 		const calendarEntries = document.getElementById("calendar-entries");
 
-		if (!resetButton) {
-			return;
-		}
+		if (!resetButton) return;
 
 		resetButton.addEventListener("click", () => {
 			calendarEntries.classList.remove("summary-box");
 			calendarEntries.innerHTML = ``;
+
+			checkedPlays = [];
+			saveDataInStorage("selectedPlays", checkedPlays)
 
 			const noneRadios = document.querySelectorAll(
 				"input[type = 'radio'][value = 'none]"

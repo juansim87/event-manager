@@ -1,5 +1,3 @@
-import { showOptions } from "./show-dates.js";
-
 export const getPlays = async () => {
 	try {
 		const response = await fetch("/helpers/upm-theater-festival-2025.json");
