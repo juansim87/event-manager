@@ -3,13 +3,10 @@ import { getDatabase } from "/components/get-dates.js";
 import { generateSummary } from "./generate-summary.js";
 import { saveDataInStorage, getDataFromStorage } from "../helpers/storage.js";
 
-
-
 const storedPlays = getDataFromStorage("selectedPlays");
 export let checkedPlays = Array.isArray(storedPlays) ? storedPlays : [];
 
 export const buildCalendar = async () => {
-
 	const dateFilter = async (date) => {
 		const data = await getDatabase();
 
@@ -82,41 +79,38 @@ export const buildCalendar = async () => {
 	};
 
 	const generatePopups = async () => {
-	const data = await getDatabase();
-	const popups = {};
+		const data = await getDatabase();
+		const popups = {};
 
-	data.forEach((play) => {
-		play.performances.forEach((performance) => {
-			const date = performance.start_time.split("T")[0];
-			const time = performance.start_time.split("T")[1].slice(0, 5);
+		data.forEach((play) => {
+			play.performances.forEach((performance) => {
+				const date = performance.start_time.split("T")[0];
+				const time = performance.start_time.split("T")[1].slice(0, 5);
 
-			if (!popups[date]) {
-				popups[date] = [];
-			}
+				if (!popups[date]) {
+					popups[date] = [];
+				}
 
-			popups[date].push({ time, title: play.title });
+				popups[date].push({ time, title: play.title });
+			});
 		});
-	});
 
-	const finalPopups = {};
+		const finalPopups = {};
 
-	Object.keys(popups).forEach((date) => {
-		const sorted = popups[date].sort((a, b) => a.time.localeCompare(b.time));
+		Object.keys(popups).forEach((date) => {
+			const sorted = popups[date].sort((a, b) => a.time.localeCompare(b.time));
 
-		const html = sorted
-			.map(
-				(f) =>
-					`<b>${f.time} PM</b><br><p>${f.title}</p><br>`
-			)
-			.join("");
+			const html = sorted
+				.map((f) => `<b>${f.time} PM</b><br><p>${f.title}</p><br>`)
+				.join("");
 
-		finalPopups[date] = {
-			html: `<div class = "popup">${html}</div>`,
-		};
-	});
+			finalPopups[date] = {
+				html: `<div class = "popup">${html}</div>`,
+			};
+		});
 
-	return finalPopups;
-};
+		return finalPopups;
+	};
 
 	const { Calendar } = window.VanillaCalendarPro;
 
@@ -137,6 +131,10 @@ export const buildCalendar = async () => {
 			const contenedor = document.getElementById("date-plays");
 			contenedor.innerHTML = "";
 
+			const existingSelectionForDate = checkedPlays.find(
+		(p) => p.date === selectedDate
+	);
+
 			const noneId = `none-${selectedDate}`;
 			const noneInput = document.createElement("input");
 			noneInput.type = "radio";
@@ -145,11 +143,9 @@ export const buildCalendar = async () => {
 			noneInput.value = "none";
 			noneInput.setAttribute("data-date", selectedDate);
 
-			const existingSelection = checkedPlays.find(
-				(p) => p.date === selectedDate
-			);
+			
 
-			if (!existingSelection) {
+			if (!existingSelectionForDate) {
 				noneInput.checked = true;
 			}
 
@@ -159,7 +155,6 @@ export const buildCalendar = async () => {
 				checkedPlays = checkedPlays.filter((p) => p.date !== date);
 
 				saveDataInStorage("selectedPlays", checkedPlays);
-
 			});
 
 			const noneLabel = document.createElement("label");
@@ -183,7 +178,7 @@ export const buildCalendar = async () => {
 				const existingSelection = checkedPlays.find(
 					(p) =>
 						p.date === selectedDate &&
-						p.play === play.title &&
+						p.title === play.title &&
 						p.time === play.start_time
 				);
 
@@ -205,7 +200,6 @@ export const buildCalendar = async () => {
 					checkedPlays.push(checkedPlayInfo);
 
 					saveDataInStorage("selectedPlays", checkedPlays);
-					
 				});
 
 				const label = document.createElement("label");
@@ -247,7 +241,7 @@ export const buildCalendar = async () => {
 				radio.checked = true;
 			});
 
-			checkedPlays= [];
+			checkedPlays = [];
 		});
 	};
 
