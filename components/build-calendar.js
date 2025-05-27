@@ -78,36 +78,41 @@ export const buildCalendar = async () => {
 	};
 
 	const generatePopups = async () => {
-		const data = await getDatabase();
+	const data = await getDatabase();
+	const popups = {};
 
-		const popups = {};
+	data.forEach((play) => {
+		play.performances.forEach((performance) => {
+			const date = performance.start_time.split("T")[0];
+			const time = performance.start_time.split("T")[1].slice(0, 5);
 
-		data.forEach((play) => {
-			play.performances.forEach((performance) => {
-				const date = performance.start_time.split("T")[0];
-				const time = performance.start_time.split("T")[1].slice(0, 5);
+			if (!popups[date]) {
+				popups[date] = [];
+			}
 
-				const block = `<b>${time} PM</b><br><p style="margin: 5px 0 0;">${play.title}</p><br>`;
-
-				if (!popups[date]) {
-					popups[date] = {
-						html: `<div>${block}`,
-					};
-				} else {
-					popups[date].html += block;
-				}
-			});
+			popups[date].push({ time, title: play.title });
 		});
+	});
 
-		// Cerramos el <div> abierto para cada fecha
-		Object.keys(popups).forEach((date) => {
-			popups[date].html += `</div>`;
-		});
+	const finalPopups = {};
 
-		return popups;
-	};
+	Object.keys(popups).forEach((date) => {
+		const sorted = popups[date].sort((a, b) => a.time.localeCompare(b.time));
 
-	console.log(await generatePopups());
+		const html = sorted
+			.map(
+				(f) =>
+					`<b>${f.time} PM</b><br><p>${f.title}</p><br>`
+			)
+			.join("");
+
+		finalPopups[date] = {
+			html: `<div class = "popup">${html}</div>`,
+		};
+	});
+
+	return finalPopups;
+};
 
 	const { Calendar } = window.VanillaCalendarPro;
 

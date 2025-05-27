@@ -216,3 +216,8 @@ main {
 .bg-red {
 	background-color: blue;
 }
+
+.popup {
+	padding: 4px;
+	width: 120px;
+}
